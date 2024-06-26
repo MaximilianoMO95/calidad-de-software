@@ -7,7 +7,7 @@ use Tests\Support\AcceptanceTester;
 
 class LoginCest
 {
-    public const LOGINPAGE = "login.php";
+    public const LOGINPAGE = 'login.php';
 
     public function _before(AcceptanceTester $I): void
     {
@@ -17,12 +17,12 @@ class LoginCest
     {
         $I->amOnPage($this::LOGINPAGE);
 
-        $I->fillField("user_name", "admin");
-        $I->fillField("user_password", "admin");
+        $I->fillField('user_name', 'admin');
+        $I->fillField('user_password', 'admin');
 
-        $I->click("login");
+        $I->click('login');
 
-        $I->amOnPage("/stock.php");
+        $I->amOnPage('/stock.php');
     }
 
     public function tryToTestInvalidCredentials(AcceptanceTester $I): void
@@ -30,11 +30,11 @@ class LoginCest
         // Invalid Password
         $I->amOnPage($this::LOGINPAGE);
 
-        $I->fillField("user_name", "admin");
-        $I->fillField("user_password", "0");
+        $I->fillField('user_name', 'admin');
+        $I->fillField('user_password', '0');
 
-        $I->click("login");
+        $I->click('login');
 
-        $I->see("Error!");
+        $I->see('Error!');
     }
 }
