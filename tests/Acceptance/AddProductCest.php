@@ -29,5 +29,11 @@ class AddProductCest
         $I->selectOption("categoria", "1");
         $I->fillField("precio", "1000");
         $I->fillField("stock", "10");
+
+        $I->click("#guardar_datos");
+    }
+
+    public function tryToTestDeleteOneProduct(AcceptanceTester $I): void
+    {
     }
 }

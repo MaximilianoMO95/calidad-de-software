@@ -1,9 +1,9 @@
 {
-    "require": {},
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.10",
         "codeception/codeception": "^5.1",
         "codeception/module-phpbrowser": "*",
-        "codeception/module-asserts": "*"
+        "codeception/module-asserts": "*",
+        "codeception/module-db": "^3.1"
     }
 }

@@ -7,7 +7,15 @@ actor: AcceptanceTester
 modules:
     enabled:
         - PhpBrowser:
-            url: http://localhost:8000/
+            url: 'http://127.0.0.1:8000/'
+        - Db:
+            dsn: 'mysql:host=127.0.0.1;dbname=testdb'
+            user: 'root'
+            password: ''
+            dump: 'tests/Support/Data/dump.sql'
+            cleanup: true # reload dump between tests
+            populate: true # load dump before all tests
+            populator: 'mysql -u $user $dbname < tests/Support/Data/dump.sql'
 # Add Codeception\Step\Retry trait to AcceptanceTester to enable retries
 step_decorators:
     - Codeception\Step\ConditionalAssertion
