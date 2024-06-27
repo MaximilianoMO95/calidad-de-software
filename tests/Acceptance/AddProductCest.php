@@ -7,11 +7,9 @@ use Tests\Support\AcceptanceTester;
 
 class AddProductCest
 {
-    private const PRODUCTPAGE = 'stock.php';
-
     public function _before(AcceptanceTester $I): void
     {
-        $I->amOnPage(LoginCest::LOGINPAGE);
+        $I->amOnPage(CommonCest::LOGIN_PAGE);
 
         $I->fillField('user_name', 'admin');
         $I->fillField('user_password', 'admin');
@@ -21,7 +19,7 @@ class AddProductCest
 
     public function tryToTestAddOneProduct(AcceptanceTester $I): void
     {
-        $I->amOnPage($this::PRODUCTPAGE);
+        $I->amOnPage(CommonCest::STOCK_PAGE);
         $I->click('#nuevoProducto');
 
         $I->fillField('codigo', 'fake1');
@@ -48,7 +46,7 @@ class AddProductCest
             ]
         );
 
-        $I->amOnPage($this::PRODUCTPAGE);
+        $I->amOnPage(CommonCest::STOCK_PAGE);
         $I->click('#nuevoProducto');
 
         $I->fillField('codigo', 'M002');

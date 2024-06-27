@@ -15,7 +15,6 @@ modules:
             dump: 'tests/Support/Data/dump.sql'
             cleanup: true # reload dump between tests
             populate: true # load dump before all tests
-            populator: 'mysql -u $user $dbname < tests/Support/Data/dump.sql'
 # Add Codeception\Step\Retry trait to AcceptanceTester to enable retries
 step_decorators:
     - Codeception\Step\ConditionalAssertion
