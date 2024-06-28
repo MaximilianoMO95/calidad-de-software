@@ -20,6 +20,7 @@ Vagrantfile
 *phpcs*
 /thirdparty/
 /mysql/
+!docs/**/*
 
 ## File-based project format:
 *.ipr
