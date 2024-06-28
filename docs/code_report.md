@@ -173,7 +173,12 @@ a que despues de reautenticar al usario el id de session no se regenera.
 - `25/06/2024 - 03:00` se agrego composer y [Codeception](https://codeception.com/) para escribir las pruebas.
 - `27/05/2024 - 11:00` se realizaron pruebas de penetracion con [SQLmap](https://sqlmap.org/)
 - `27/05/2024 - 12:00` se realizaron pruebas de penetracion con [Nikto](https://github.com/sullo/nikto)
+
 - `27/06/2024 - 21:00` se agregaron pruebas para los siguientes componentes:
     - login: tanto uni test como integration test
     - agregar un producto: solo integration test
     - eliminar un producto: solo integration test
+
+- `28/06/2024 - 17:00` se agregaron pruebas para los siguientes componentes:
+    - agregar un producto: se agregaron mas test cases
+    - editar un producto: se agregaron pruebas de integracion
