@@ -3,14 +3,41 @@ Este documento es un sumario de todos los errores y malas practicas
 encontradas en la base de codigo **system**. Ademas en este documento
 se incluiran recomendaciones y notas sobre las pruebas agregadas.
 
-version: v0.1
+version: v0.2
 
 <br>
 
 ## Diseño
-- Codigo desorganizado.
-- HTML y PHP mas mesclado de lo necesario.
-- HTML mal uso de formularios y botones en multiples paginas.
+1. Codigo desorganizado.
+2. HTML y PHP mas mesclado de lo necesario.
+3. Durante las pruebas de integracion se detecto un
+   mal uso de formularios y botones dentro del HTML en multiples paginas.
+
+### Sumario
+1. **Desorganización del Código:**
+  - **Problema:** El código actual está desorganizado, lo cual dificulta su
+   mantenimiento y comprensión. 
+
+  - **Recomendación:** Se recomienda refactorizar y
+   estructurar el código de manera más ordenada y modular.
+
+2. **Mezcla Excesiva de HTML y PHP:**
+  - **Problema:** Existe una integración excesiva de código HTML y PHP, lo
+    cual dificulta la separación de la lógica de presentación y la
+    lógica de negocio.
+
+  - **Recomendación:** Se sugiere utilizar un patrón de diseño
+    MVC (Modelo-Vista-Controlador) u otras prácticas que promuevan una
+    separación clara de responsabilidades.
+
+3. **Mal Uso de Formularios y Botones:**
+  - **Problema:** Se observa un uso ineficiente de formularios y botones en múltiples
+    páginas, lo que puede afectar la usabilidad y la experiencia
+    del usuario.
+
+  - **Recomendación:** Se aconseja revisar y mejorar la implementación
+    de formularios y botones para asegurar una navegación coherente
+    y eficiente.
 
 <br>
 <br>
@@ -36,7 +63,7 @@ una session ya existe lo que a la larga provocara errores.
 ```
 
 2. Algunas clases como `Login` no tienen las dependencias dentro del
-mismo archivo.  Actualmente las dependencias de la clase `Login` estan
+mismo archivo. Actualmente las dependencias de la clase `Login` estan
 siendo importadas dentro de `login.php` esto funciona pero a medida de
 que la base de codigo cresca probablemente sera un desastre, por lo que
 se recomienda usar `composer` y `namespaces` o directamente `require`
@@ -146,7 +173,8 @@ a que despues de reautenticar al usario el id de session no se regenera.
 
 ## Pruebas
 - `25/06/2024 - 03:00` se agrego composer y [Codeception](https://codeception.com/) para escribir las pruebas.
-
+- `27/05/2024 - 11:00` se realizaron pruebas de penetracion con [SQLmap](https://sqlmap.org/)
+- `27/05/2024 - 12:00` se realizaron pruebas de penetracion con [Nikto](https://github.com/sullo/nikto)
 - `27/06/2024 - 21:00` se agregaron pruebas para los siguientes componentes:
     - login: tanto uni test como integration test
     - agregar un producto: solo integration test
