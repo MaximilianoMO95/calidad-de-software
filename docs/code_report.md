@@ -15,27 +15,27 @@ version: v0.2
 
 ### Sumario
 1. **Desorganización del Código:**
-  - **Problema:** El código actual está desorganizado, lo cual dificulta su
-   mantenimiento y comprensión. 
+    - **Problema:** El código actual está desorganizado, lo cual dificulta su
+    mantenimiento y comprensión. 
 
-  - **Recomendación:** Se recomienda refactorizar y
-   estructurar el código de manera más ordenada y modular.
+    - **Recomendación:** Se recomienda refactorizar y
+    estructurar el código de manera más ordenada y modular.
 
 2. **Mezcla Excesiva de HTML y PHP:**
-  - **Problema:** Existe una integración excesiva de código HTML y PHP, lo
-    cual dificulta la separación de la lógica de presentación y la
-    lógica de negocio.
+    - **Problema:** Existe una integración excesiva de código HTML y
+    PHP, lo cual dificulta la separación de la lógica de presentación
+    y la lógica de negocio.
 
-  - **Recomendación:** Se sugiere utilizar un patrón de diseño
+    - **Recomendación:** Se sugiere utilizar un patrón de diseño
     MVC (Modelo-Vista-Controlador) u otras prácticas que promuevan una
     separación clara de responsabilidades.
 
 3. **Mal Uso de Formularios y Botones:**
-  - **Problema:** Se observa un uso ineficiente de formularios y botones en múltiples
+    - **Problema:** Se observa un uso ineficiente de formularios y botones en múltiples
     páginas, lo que puede afectar la usabilidad y la experiencia
     del usuario.
 
-  - **Recomendación:** Se aconseja revisar y mejorar la implementación
+    - **Recomendación:** Se aconseja revisar y mejorar la implementación
     de formularios y botones para asegurar una navegación coherente
     y eficiente.
 
@@ -94,75 +94,73 @@ a que despues de reautenticar al usario el id de session no se regenera.
 
 ### Sumario
 1. PHP Version Disclosure:
-- **Error:** `Retrieved x-powered-by header: PHP/5.6.25.`
-- **Recomendación:**
-  - Ocultar la versión de PHP en las cabeceras HTTP.
-  - **Solución:**
+    - **Error:** `Retrieved x-powered-by header: PHP/5.6.25.`
+    - **Recomendación:** Ocultar la versión de PHP en las cabeceras HTTP.
+
+    - **Solución:**
     ```php
     // Añadir en el archivo php.ini
     expose_php = Off
-    ```
-    O en el archivo `.htaccess`:
-    ```apache
+
+    // O en el archivo `.htaccess`
     Header unset X-Powered-By
     ```
 
 2. Falta de Cabecera X-Frame-Options:
-- **Error:** `The anti-clickjacking X-Frame-Options header is not present.`
-- **Recomendación:**
-  - Agregar la cabecera `X-Frame-Options`.
-  - **Solución:**
-    ```apache
-    Header always append X-Frame-Options SAMEORIGIN
-    ```
-    O en PHP:
+    - **Error:** `The anti-clickjacking X-Frame-Options header is not present.`
+    - **Recomendación:** Agregar la cabecera `X-Frame-Options`.
+
+    - **Solución:**
     ```php
+    // php
     header('X-Frame-Options: SAMEORIGIN');
+
+    // O en el archivo `.htaccess`
+    Header always append X-Frame-Options SAMEORIGIN
     ```
 
 3. Falta de Cabecera X-Content-Type-Options:
-- **Error:** `The X-Content-Type-Options header is not set.`
-- **Recomendación:**
-  - Agregar la cabecera `X-Content-Type-Options`.
-  - **Solución:**
-    ```apache
-    Header set X-Content-Type-Options nosniff
-    ```
-    O en PHP:
+    - **Error:** `The X-Content-Type-Options header is not set.`
+    - **Recomendación:** Agregar la cabecera `X-Content-Type-Options`.
+
+    - **Solución:**
     ```php
+    // php
     header('X-Content-Type-Options: nosniff');
+
+    // O en el archivo `.htaccess`
+    Header set X-Content-Type-Options nosniff
     ```
 
 4. Redirección de Página Raíz:
-- **Error:** `Root page / redirects to: stock.php`
-- **Recomendación:**
-  - Validar que la redirección es necesaria y segura.
+    - **Error:** `Root page / redirects to: stock.php`
+    - **Recomendación:** Validar que la redirección es necesaria y segura.
 
 5. Cookie PHPSESSID sin Flag HttpOnly:
-- **Error:** `Cookie PHPSESSID created without the httponly flag.`
-- **Recomendación:**
-  - Establecer la flag `HttpOnly` en las cookies.
-  - **Solución:**
+    - **Error:** `Cookie PHPSESSID created without the httponly flag.`
+    - **Recomendación:** Establecer la flag `HttpOnly` en las cookies.
+
+    - **Solución:**
     ```php
     session_set_cookie_params(['httponly' => true]);
     session_start();
     ```
 
 6. Pagina de Inicio de Sesión de Administrador:
-- **Error:** `Admin login page/section found.`
-- **Recomendación:**
-  - Proteger la página de inicio de sesión de administrador.
-  - **Solución:**
-    - Implementar autenticación multifactor (MFA).
-    - Usar mecanismos de bloqueo después de varios intentos fallidos.
-    - Asegurarse de que las contraseñas se almacenan de manera segura.
+    - **Error:** `Admin login page/section found.`
+    - **Recomendación:** Proteger la página de inicio de sesión de administrador.
+
+    - **Solución:**
+        - Implementar autenticación multifactor (MFA).
+        - Usar mecanismos de bloqueo después de varios intentos fallidos.
+        - Asegurarse de que las contraseñas se almacenan de manera segura.
 
 7. Mitigación de Ataques de Secuestro de Sesiones:
-- **Recomendación:**
-  - Se debería usar `session_regenerate_id(true)` para mitigar ataques
-    de fijación de sesiones creando un nuevo identificador de sesión
-    después de la autenticación del usuario.
-  - **Solución:**
+    - **Recomendación:** Se debería usar `session_regenerate_id(true)`
+    para mitigar ataques de fijación de sesiones creando un nuevo
+    identificador de sesión después de la autenticación del usuario.
+
+    - **Solución:**
     ```php
     // Después de autenticar al usuario
     session_regenerate_id(true);
