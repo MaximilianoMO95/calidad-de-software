@@ -1,0 +1,12 @@
+actor: IntegrationTester
+suite_namespace: Tests\Integration
+modules:
+    # enable helpers as array
+    enabled:
+        - Db:
+            dsn: 'mysql:host=127.0.0.1;dbname=testdb'
+            user: 'root'
+            password: ''
+            dump: 'tests/Support/Data/dump.sql'
+            cleanup: true # reload dump between tests
+            populate: true # load dump before all tests
