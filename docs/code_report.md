@@ -169,7 +169,26 @@ a que despues de reautenticar al usario el id de session no se regenera.
 <br>
 <br>
 
-## Pruebas
+## Pruebas Manuales
+Esto es un registro de todas las pruebas manuales que se han ido realizando en el sistema.
+
+- `29/06/2024 - 17:00` se realizo una prueba en la pagina '/producto?id=' y se detecto un problema.
+    - Problema: Al editar un producto y presionar guardar los cambios, ocurre una redireccion
+    a la pagina principal esto sin importar si la edicion fue exitosa o no.
+
+    - Pasos a seguir para reproducir:
+        1. Logear y presionar cualquier producto en el inventario
+        2. Presionar el boton de editar
+        3. Editar cualquier campo (con valores incorrectos o correctos)
+        4. Presionar el boton para guardar cambios
+
+<br>
+<br>
+
+
+## Pruebas Automaticas
+Esto es un registro de todas las pruebas automaticas que se han ido integrando al sistema.
+
 - `25/06/2024 - 03:00` se agrego composer y [Codeception](https://codeception.com/) para escribir las pruebas.
 - `27/05/2024 - 11:00` se realizaron pruebas de penetracion con [SQLmap](https://sqlmap.org/)
 - `27/05/2024 - 12:00` se realizaron pruebas de penetracion con [Nikto](https://github.com/sullo/nikto)
