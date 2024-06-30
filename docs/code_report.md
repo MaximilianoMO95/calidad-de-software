@@ -6,6 +6,26 @@ se incluiran recomendaciones y notas sobre las pruebas agregadas.
 version: v0.2
 
 <br>
+<br>
+
+## Resultados
+- `30/06/2024 - 11:00` Se realizaron las pruebas de penetracion con nikto:
+    - **Componentes:** Todo el sistema
+    - **Resultados:** El sistema es vulnerable a ataques de secuestro
+    de session y cross-site-scripting (XSS)
+
+- `30/06/2024 - 11:00` Se realizaron las pruebas de injeccion SQL con SQLMAP:
+    - **Componentes:** Todo el sistema
+    - **Resultados:** SQLMAP no encontro vulnerabilidades 
+
+- `30/06/2024 - 12:00` Se realizaron las pruebas automaticas de integracion:
+    - **Componentes:** Agregar-Eliminar-Editar un producto, login.
+    - **Resultados:** `Tests: 10, Assertions: 6, Errors: 5, Failures: 7`. La mayoria de
+    pruebas pruebas fallaron resultado de erroes de diseño de formularios
+    en el html.
+
+<br>
+<br>
 
 ## Diseño
 1. Codigo desorganizado.
@@ -45,7 +65,10 @@ version: v0.2
 ## Codigo
 1. Mal uso de  `start_session()` este esta siendo utilizado dentro del
 constructor de la clase `Login` sin embargo no se esta chequeando si
-una session ya existe lo que a la larga provocara errores.
+una session ya existe lo que a la larga provocara errores. Ademas se
+detecto el uso de `start_session()` al inicio del codigo de cada pagina
+lo cual es malo ya que `start_session()` se deberia llamar solo una vez
+al comenzar una session no multiples veces.
 ```php
     // Uso Actual
     public function __construct() {
@@ -68,6 +91,9 @@ siendo importadas dentro de `login.php` esto funciona pero a medida de
 que la base de codigo cresca probablemente sera un desastre, por lo que
 se recomienda usar `composer` y `namespaces` o directamente `require`
 o `require_once`.
+
+3. El codigo actualmente esta muy desorganizado lo que dificulta la
+implementacion de pruebas, sobre todo pruebas de integracion.
 
 <br>
 <br>
@@ -185,7 +211,6 @@ Esto es un registro de todas las pruebas manuales que se han ido realizando en e
 <br>
 <br>
 
-
 ## Pruebas Automaticas
 Esto es un registro de todas las pruebas automaticas que se han ido integrando al sistema.
 
@@ -201,3 +226,6 @@ Esto es un registro de todas las pruebas automaticas que se han ido integrando a
 - `28/06/2024 - 17:00` se agregaron pruebas para los siguientes componentes:
     - agregar un producto: se agregaron mas test cases
     - editar un producto: se agregaron pruebas de integracion
+
+<br>
+<br>
