@@ -20,7 +20,7 @@ class LoginCest
 
         $I->click('login');
 
-        $I->amOnPage('/stock.php');
+        $I->amOnPage(CommonCest::STOCK_PAGE);
     }
 
     public function tryToTestInvalidCredentials(AcceptanceTester $I): void
