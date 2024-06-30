@@ -3,9 +3,10 @@ Este documento es un sumario de todos los errores y malas practicas
 encontradas en la base de codigo **system**. Ademas en este documento
 se incluiran recomendaciones y notas sobre las pruebas agregadas.
 
-version: v0.2
-
 <br>
+
+version: **v0.2**
+
 <br>
 
 ## Resultados
