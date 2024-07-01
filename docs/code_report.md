@@ -14,32 +14,70 @@ version: **v0.2**
     - **Componentes:** Todo el sistema
     - **Resultados:** El sistema es vulnerable a ataques de secuestro
     de session y cross-site-scripting (XSS)
+    - **Evidencias:** Reporte Nikto
+    ```
+    + /: Retrieved x-powered-by header: PHP/5.6.25.
+    + /: The anti-clickjacking X-Frame-Options header is not present. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+    + /: The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type. See: https://www.netsparker.com/web-vulnerability-scanner/vulnerabilities/missing-content-type-header/
+    + Root page / redirects to: stock.php
+    + /login.php: Cookie PHPSESSID created without the httponly flag. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
+    + /login.php: Admin login page/section found.
+    ```
 
 - `30/06/2024 - 11:00` Se realizaron las pruebas de injeccion SQL con SQLMAP:
     - **Componentes:** Todo el sistema
     - **Resultados:** SQLMAP no encontro vulnerabilidades 
+    - **Evidencias:** Se puede encontrar un log en `docs/sqlmap`
 
 - `30/06/2024 - 12:00` Se realizaron las pruebas automaticas de integracion:
     - **Componentes:** Agregar-Eliminar-Editar un producto, login.
     - **Resultados:** `Tests: 10, Assertions: 6, Errors: 5, Failures: 7`. La mayoria de
     pruebas pruebas fallaron resultado de erroes de diseño de formularios
     en el html.
+    - **Evidencias:** 
+    ```
+    Codeception PHP Testing Framework v5.1.2 https://stand-with-ukraine.pp.ua
+    AddProductCest: Try to test add one product................................ERROR
+    AddProductCest: Try to test add product with same code.....................ERROR
+    AddProductCest: Try to test add product without category...................ERROR
+    AddProductCest: Try to test add product with not numeric price.............ERROR
+    AddProductCest: Try to test add product with same name.....................ERROR
+    DeleteProductCest: Test The popup but I can't without the webdriver........Ok
+    EditProductCest: Try to test modify product name...........................FAIL
+    EditProductCest: Try to test modify product category.......................FAIL
+    LoginCest: Try to test valid credentials...................................Ok
+    LoginCest: Try to test invalid credentials.................................Ok
+    SearchProductCest: Try to test search existing product by name.............FAIL
+
+    Codeception Results
+    Successful: 3. Failed: 10.
+    ```
+
+- `29/06/2024 - 17:00` Se realizo una prueba manual y se detecto un problema:
+    - **Componentes:** Editar un producto.
+    - **Resultados:** Al editar un producto la pagina siempre redirige a `stock.php`
+    incluso cuando un campo es invalido.
+    - **Evidencias:** Se puede encontrar en la seccion pruebas manuales
 
 <br>
 <br>
 
 ## Diseño
 1. Codigo desorganizado.
+
 2. HTML y PHP mas mesclado de lo necesario.
+
 3. Durante las pruebas de integracion se detecto un
    mal uso de formularios y botones dentro del HTML en multiples paginas.
+
+4. Durante las pruebas se detecto un mal uso de codigos de respuesta HTTP.
 
 ### Sumario
 1. **Desorganización del Código:**
     - **Problema:** El código actual está desorganizado, lo cual dificulta su
     mantenimiento y comprensión. 
 
-    - **Recomendación:** Se recomienda refactorizar y
+    - **Recomendacion:** Se recomienda refactorizar y
     estructurar el código de manera más ordenada y modular.
 
 2. **Mezcla Excesiva de HTML y PHP:**
@@ -47,7 +85,7 @@ version: **v0.2**
     PHP, lo cual dificulta la separación de la lógica de presentación
     y la lógica de negocio.
 
-    - **Recomendación:** Se sugiere utilizar un patrón de diseño
+    - **Recomendacion:** Se sugiere utilizar un patrón de diseño
     MVC (Modelo-Vista-Controlador) u otras prácticas que promuevan una
     separación clara de responsabilidades.
 
@@ -56,9 +94,19 @@ version: **v0.2**
     páginas, lo que puede afectar la usabilidad y la experiencia
     del usuario.
 
-    - **Recomendación:** Se aconseja revisar y mejorar la implementación
+    - **Recomendacion:** Se aconseja revisar y mejorar la implementación
     de formularios y botones para asegurar una navegación coherente
     y eficiente.
+
+4. **Mal uso codigos de respuesta HTTP**
+    - **Problema:** Al enviar solicitudes `POST` O `GET` hacia el servidor
+    este siempre responde con un codigo  `[ok] 200` incluso con solicitudes
+    invalidas, lo que dificulta la implementacion de pruebas y proboca errores
+    en el comportamiento del sistema.
+
+    - **Recomendacion:** Se aconseja refactorizar el
+    codigo cambiando las respuestas de codigo HTTP. Segun
+    los estandares de la W3C [W3C - Status Code Definitions](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
 
 <br>
 <br>
@@ -208,6 +256,37 @@ Esto es un registro de todas las pruebas manuales que se han ido realizando en e
         2. Presionar el boton de editar
         3. Editar cualquier campo (con valores incorrectos o correctos)
         4. Presionar el boton para guardar cambios
+
+    - Evidencias:
+    ```php
+    // producto.php
+    // ...
+    // linea: 200
+    $( "#editar_producto" ).submit(function( event ) {
+      $('#actualizar_datos').attr("disabled", true);
+      
+     var parametros = $(this).serialize();
+         $.ajax({
+                type: "POST",
+                url: "ajax/editar_producto.php",
+                data: parametros,
+                 beforeSend: function(objeto){
+                    $("#resultados_ajax2").html("Mensaje: Cargando...");
+                  },
+                success: function(datos){
+                $("#resultados_ajax2").html(datos);
+                $('#actualizar_datos').attr("disabled", false);
+                window.setTimeout(function() {
+                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove();});
+                    location.replace('stock.php');
+                }, 4000);
+              }
+        });
+      event.preventDefault();
+    })
+    // ...
+    ```
 
 <br>
 <br>
