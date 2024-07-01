@@ -10,6 +10,12 @@ version: **v0.2**
 <br>
 
 ## Resultados
+- `20/06/2024 - 10:00` Se realizaron pruebas con `phpcs`:
+    - **Componentes:** Todo el sistema
+    - **Resultados:** Se encontraron **2.913** errores y **255** advertencias
+    lo que indica que el codigo no sigue los estandares php
+    - **Evidencias:** Se puede encontrar un sumario en `docs/phpcs`
+
 - `30/06/2024 - 11:00` Se realizaron las pruebas de penetracion con nikto:
     - **Componentes:** Todo el sistema
     - **Resultados:** El sistema es vulnerable a ataques de secuestro
