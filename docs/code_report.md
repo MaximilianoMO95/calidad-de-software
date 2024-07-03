@@ -65,6 +65,24 @@ version: **v0.2**
     incluso cuando un campo es invalido.
     - **Evidencias:** Se puede encontrar en la seccion pruebas manuales
 
+- `02/07/2024 - 17:00` se realizo una prueba para chequear ortofrafia y se encontraron multiples
+errores de ortografia.
+    - **Componentes:** Paginas php.
+    - **Resultados:** Multiples errores de ortografia
+    - **Evidencias:** Se puede encontrar en la seccion pruebas manuales
+
+- `02/07/2024 - 17:30` se realizo una prueba general y se detecto un problema
+con la creacion de usuarios, el problema es que al crear un usuario la contraseña
+no se almacena correctamente por lo que al intentar logear siempre se general el 
+error de credenciales incorrectas.
+    - **Componentes:** Pagina usuarios.
+    - **Resultados:** Al crear un nuevo usuario, la contraseña se guarda en
+    texto plano y no se encripta lo que proboca dos faltas graves, primero que
+    al no estar encriptada en el login este falla con autenticar al usuario debido
+    a que intenta desencriptar la password y segundo al almacenar las passwords en
+    texto plano permite a un atacante ganar acceso a todas las cuentas.
+    - **Evidencias:** Se puede encontrar en la seccion pruebas manuales
+
 <br>
 <br>
 
@@ -266,9 +284,8 @@ Esto es un registro de todas las pruebas manuales que se han ido realizando en e
     - Evidencias:
     ```php
     // producto.php
-    // ...
-    // linea: 200
-    $( "#editar_producto" ).submit(function( event ) {
+    // 199 ...
+    // 200 $( "#editar_producto" ).submit(function( event ) {
       $('#actualizar_datos').attr("disabled", true);
       
      var parametros = $(this).serialize();
@@ -291,7 +308,77 @@ Esto es un registro de todas las pruebas manuales que se han ido realizando en e
         });
       event.preventDefault();
     })
-    // ...
+    // 223 ...
+    ```
+
+- `02/07/2024 - 17:00` se realizo una prueba para chequear ortofrafia y se encontraron multiples
+errores de ortografia.
+
+    - Pasos a seguir para reproducir:
+        1. Logear y navegar por la pagina
+        2. Observar los multiples errores ortograficos
+
+    - Evidencias:
+    ```php
+    // pagina: todas las paginas
+    // file: navbar.php
+
+    // 20 ...
+    // 21 ... Inbentario</a></li>
+    // 22 ...
+
+    // pagina: categorias
+    // file: ajax/buscar_categorias.php
+
+    // 82 ...
+    // 83 <th>Descripsión</th>
+    // 84 ...
+
+
+    // pagina: usuarios
+    // file: usuarios.php
+
+    // 39 ...
+    // 40 <label for="q" class="col-md-2 control-label">Nonbres:</label>
+    // 41 ...
+    ```
+
+- `02/07/2024 - 17:30` se realizo una prueba general y se detecto un problema
+con la creacion de usuarios, el problema es que al crear un usuario la contraseña
+no se almacena correctamente por lo que al intentar logear siempre se general el 
+error de credenciales incorrectas.
+
+    - Pasos a seguir para reproducir:
+        1. Logear y navegar a la pagina usuarios
+        2. Presionar "Nuevo Usuario"
+        3. Llenar los campos y presionar "Guardar Datos"
+        4. Salir o limpiar login cookie
+        5. Intentar logear con las credenciales del nuevo usuario
+        6. Observar error de usuario invalido
+
+    - Observaciones: En el codigo al guardar un nuevo usuario
+    la contraseña no esta siendo salseada con el algoritmo de
+    encriptado por lo que se almacena en texto plano en la
+    base de datos.
+
+    - Evidencias:
+    ```php
+    // pagina: usuarios.php
+    // file: ajax/nuevo_usuario.php
+    // nota: Como se puede observar la contraseña no esta siendo salseada
+
+    // 54 ...
+    // 55 $user_password = $_POST['user_password_new'];
+    // 46 ...
+
+    // pagina: login
+    // file: classes/Login.php
+    // nota: Como se puede observar al logear se utiliza el hash por lo que al
+    //       guardar la contraseña sin salsa se produce un error de login.
+
+    // 82 ...
+    // 83 if (password_verify($_POST['user_password'], $result_row->user_password_hash)) {
+    // 84 ...
     ```
 
 <br>
